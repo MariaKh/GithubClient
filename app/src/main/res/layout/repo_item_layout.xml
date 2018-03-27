@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="repo"
+            type="com.githubclient.model.Repo" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/repo_item_height"
+        android:padding="@dimen/common_margin_16">
+
+        <TextView
+            android:id="@+id/repo_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:text="@{repo.name}" />
+    </RelativeLayout>
+</layout>
