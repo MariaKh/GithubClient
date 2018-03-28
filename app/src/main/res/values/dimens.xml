@@ -5,4 +5,9 @@
     <dimen name="user_avatar_width">72dp</dimen>
     <dimen name="repo_item_height">72dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="user_container_details_height">120dp</dimen>
+    <dimen name="user_details_avatar_size">@dimen/user_container_details_height</dimen>
+    <dimen name="user_details_name_text_size">16sp</dimen>
+    <dimen name="list_item_horizontal_padding">16dp</dimen>
+    <dimen name="list_item_vertical_padding">4dp</dimen>
 </resources>

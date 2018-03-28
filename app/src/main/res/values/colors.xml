@@ -3,4 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="grey_color">#a6a7ae</color>
+    <color name="item_list_bg_color">#dadade</color>
 </resources>

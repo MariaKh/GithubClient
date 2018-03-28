@@ -20,7 +20,7 @@ import retrofit2.http.Query;
 public interface GithubApi {
 
     @GET("search/users")
-    Single<UserApiResponse> getUsers(@Query("q") String criteria);
+    Single<UserApiResponse> getUsers(@Query("q") String criteria, @Query("page") int page);
 
     @GET("users/{login}/repos")
     Single<List<Repo>> getRepos(@Path("login") String login);

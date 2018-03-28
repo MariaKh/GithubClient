@@ -1,4 +1,4 @@
-package com.githubclient.ui.adapters;
+package com.githubclient.ui.details;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +20,19 @@ public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoViewHolder
     private ArrayList<Repo> repositories;
     private Context context;
 
+    public RepoAdapter(Context context) {
+        this.context = context;
+    }
+
+    public RepoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        RepoItemLayoutBinding binding = RepoItemLayoutBinding.inflate(LayoutInflater.from(context), parent, false);
+        return new RepoViewHolder(binding);
+    }
+
+    @Override
+    public void onBindViewHolder(RepoViewHolder holder, final int position) {
+        holder.bind(repositories.get(position));
+    }
 
     public class RepoViewHolder extends RecyclerView.ViewHolder {
 
@@ -34,20 +47,6 @@ public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoViewHolder
             binding.setRepo(repository);
             binding.executePendingBindings();
         }
-    }
-
-    public RepoAdapter(Context context) {
-        this.context = context;
-    }
-
-    public RepoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        RepoItemLayoutBinding binding = RepoItemLayoutBinding.inflate(LayoutInflater.from(context), parent, false);
-        return new RepoViewHolder(binding);
-    }
-
-    @Override
-    public void onBindViewHolder(RepoViewHolder holder, final int position) {
-        holder.bind(repositories.get(position));
     }
 
     @Override

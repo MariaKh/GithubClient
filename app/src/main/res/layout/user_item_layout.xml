@@ -8,7 +8,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/user_item_height">
+        android:layout_height="@dimen/user_item_height"
+        android:background="@color/item_list_bg_color">
 
         <ImageView
             android:id="@+id/user_image"

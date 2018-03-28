@@ -1,9 +1,10 @@
 package com.githubclient.di;
 
 import com.githubclient.Application;
-import com.githubclient.ImageBindingAdapter;
-import com.githubclient.ui.GithubViewModel;
-import com.githubclient.ui.MainActivity;
+import com.githubclient.ui.details.DetailsActivity;
+import com.githubclient.ui.details.DetailsViewModel;
+import com.githubclient.ui.search.MainActivity;
+import com.githubclient.ui.search.MainViewModel;
 
 import javax.inject.Singleton;
 
@@ -19,5 +20,9 @@ public interface GithubComponent {
 
     void inject(Application application);
 
-    void inject(GithubViewModel githubViewModel);
+    void inject(MainViewModel mainViewModel);
+
+    void inject(DetailsActivity detailsActivity);
+
+    void inject(DetailsViewModel detailsViewModel);
 }

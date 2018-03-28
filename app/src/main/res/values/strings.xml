@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">GithubClient</string>
     <string name="title_activity_details">DetailsActivity</string>
+    <string name="search_hint">Enter user name</string>
+    <string name="score" formatted="false">Score: %f</string>
+    <string name="language" formatted="false">Language:\n%s</string>
 </resources>

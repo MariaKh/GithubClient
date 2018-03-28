@@ -11,13 +11,31 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/repo_item_height"
-        android:padding="@dimen/common_margin_16">
+        android:padding="@dimen/common_margin_16"
+        android:background="@color/item_list_bg_color">
 
         <TextView
             android:id="@+id/repo_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
+            android:textStyle="bold"
             android:text="@{repo.name}" />
+
+        <TextView
+            android:id="@+id/repo_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:text="@{@string/language(repo.language)}" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/common_margin_16"
+            android:layout_below="@id/repo_name"
+            android:layout_above="@id/repo_language"
+            android:text="@{repo.description}" />
     </RelativeLayout>
 </layout>
