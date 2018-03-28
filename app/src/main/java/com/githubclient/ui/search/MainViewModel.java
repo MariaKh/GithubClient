@@ -55,6 +55,7 @@ public class MainViewModel extends ViewModel{
     }
 
     private void loadUsers(String criteria){
+        this.criteria = criteria;
         if (disposable!=null){
             disposable.dispose();
         }
@@ -62,16 +63,15 @@ public class MainViewModel extends ViewModel{
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(users::setValue
                         ,error->{
-
+                            error.getCause();
                         });
     }
 
     public void loadNextPage() {
-        String value = query.getValue();
-        if (value == null || value.trim().length() == 0) {
-            return;
-        }
-        nextPageHandler.queryNextPage(value);
+//        if (currentPage<userRepository.getPagesAmount()) {
+//            currentPage++;
+//            loadUsers(criteria);
+//        }
     }
 
     public void setSelectedUser(User user){

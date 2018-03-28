@@ -1,14 +1,18 @@
 package com.githubclient.model;
 
+import android.arch.persistence.room.Entity;
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by 1 on 3/27/2018.
  */
-
+@Entity(tableName = "user",primaryKeys = "login")
 public class User {
 
     private long id;
+    @NonNull
     private String login;
     @SerializedName("avatar_url")
     private String avatarUrl;

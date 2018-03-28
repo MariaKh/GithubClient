@@ -49,8 +49,10 @@ public class DetailsActivity extends AppCompatActivity {
         binding.repoList.setHasFixedSize(true);
         binding.repoList.setAdapter(adapter);
         binding.repoList.setItemAnimator(new DefaultItemAnimator());
+        binding.loadMoreBar.setVisibility(View.VISIBLE);
         viewModel.getRepos().observe(DetailsActivity.this, repos -> {
             adapter.updateRepos((ArrayList<Repo>) repos);
+            binding.loadMoreBar.setVisibility(View.GONE);
         });
         binding.setUser(viewModel.getSelectedUser());
         listItemHorizontalBorderOffset = getResources().getDimensionPixelOffset(R.dimen.list_item_horizontal_padding);

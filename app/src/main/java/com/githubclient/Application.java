@@ -6,6 +6,7 @@ import com.githubclient.di.BindingComponent;
 import com.githubclient.di.ContextModule;
 import com.githubclient.di.DaggerBindingComponent;
 import com.githubclient.di.DaggerGithubComponent;
+import com.githubclient.di.DatabaseModule;
 import com.githubclient.di.GithubComponent;
 
 /**
@@ -19,7 +20,10 @@ public class Application extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        appComponent = DaggerGithubComponent.create();
+        appComponent = DaggerGithubComponent
+               .builder()
+                .contextModule(new ContextModule(this))
+                .build();
         BindingComponent bindingComponent = DaggerBindingComponent.builder()
                 .contextModule(new ContextModule(this))
                 //.applicationComponent(appComponent)
