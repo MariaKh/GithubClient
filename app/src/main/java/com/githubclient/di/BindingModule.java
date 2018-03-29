@@ -11,8 +11,8 @@ import dagger.Provides;
  */
 @Module
 public class BindingModule {
+
     @Provides
-    @DataBinding
     ImageBindingAdapter provideImageBindingAdapter(Picasso picasso) {
         return new ImageBindingAdapter(picasso);
     }

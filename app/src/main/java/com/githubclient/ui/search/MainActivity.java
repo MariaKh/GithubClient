@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,19 +15,24 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.githubclient.Application;
 import com.githubclient.R;
+import com.githubclient.data.NetworkState;
 import com.githubclient.model.User;
+import com.githubclient.ui.RetryCallback;
 import com.githubclient.ui.details.DetailsActivity;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements UserAdapter.UserAdapterOnItemClickHandler{
+public class MainActivity extends AppCompatActivity implements UserAdapter.UserAdapterOnItemClickHandler {
 
     private RecyclerView recyclerView;
     private UserAdapter adapter;
     private EditText searchField;
+    private ProgressBar progressBar;
     private MainViewModel viewModel;
     private int listItemHorizontalBorderOffset;
     private int listItemVerticalBorderOffset;
@@ -43,26 +49,21 @@ public class MainActivity extends AppCompatActivity implements UserAdapter.UserA
         searchField.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 closeKeyBoard(v.getWindowToken());
-                viewModel.searchUsers(searchField.getText().toString());
+                searchUserFromInput(searchField.getText().toString());
                 return true;
             }
             return false;
         });
-        viewModel.getUsers()
-                .observe(this, users -> {
-            adapter.updateUsers((ArrayList<User>) users);
-        });
+        recyclerView = findViewById(R.id.users_list);
+        progressBar = findViewById(R.id.load_more_bar);
         setUpRecyclerView();
     }
 
-    private void setUpRecyclerView(){
+    private void setUpRecyclerView() {
         listItemHorizontalBorderOffset = getResources().getDimensionPixelOffset(R.dimen.list_item_horizontal_padding);
         listItemVerticalBorderOffset = getResources().getDimensionPixelOffset(R.dimen.list_item_vertical_padding);
         recyclerView = findViewById(R.id.users_list);
-        adapter = new UserAdapter(this, this);
-        adapter.updateUsers((ArrayList<User>) viewModel.getUsers().getValue());
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
@@ -71,29 +72,31 @@ public class MainActivity extends AppCompatActivity implements UserAdapter.UserA
                 outRect.set(listItemHorizontalBorderOffset, listItemVerticalBorderOffset, listItemHorizontalBorderOffset, listItemVerticalBorderOffset);
             }
         });
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                LinearLayoutManager layoutManager = (LinearLayoutManager)
-                        recyclerView.getLayoutManager();
-                int lastPosition = layoutManager
-                        .findLastVisibleItemPosition();
-                if (lastPosition == adapter.getItemCount() - 1) {
-                    viewModel.loadNextPage();
-                }
-            }
-        });
+        adapter = new UserAdapter(this, this);
+        recyclerView.setAdapter(adapter);
     }
 
-    private void openUserDetailsScreen(){
-        Intent intent = new Intent(this,DetailsActivity.class);
+    private void searchUserFromInput(String query) {
+        progressBar.setVisibility(View.VISIBLE);
+        adapter.submitList(null);
+        viewModel.startSearch(MainActivity.this, query);
+        viewModel.userList.observe(this, users -> {
+            adapter.submitList(users);
+            progressBar.setVisibility(View.GONE);
+        });
+        // viewModel.getNetworkState().observe(this,networkState -> Toast.makeText(getApplicationContext(),networkState.getMessage(),Toast.LENGTH_SHORT).show());
+
+    }
+
+    private void openUserDetailsScreen() {
+        Intent intent = new Intent(this, DetailsActivity.class);
         startActivity(intent);
     }
 
     private void closeKeyBoard(IBinder windowToken) {
-            InputMethodManager imm = (InputMethodManager) this.getSystemService(
-                    Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(windowToken, 0);
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(windowToken, 0);
     }
 
     @Override

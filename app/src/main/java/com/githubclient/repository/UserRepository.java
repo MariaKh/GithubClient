@@ -1,6 +1,14 @@
 package com.githubclient.repository;
 
-import com.githubclient.db.dao.UserDao;
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Transformations;
+import android.arch.paging.LivePagedListBuilder;
+import android.arch.paging.PagedList;
+
+import com.githubclient.data.NetworkState;
+import com.githubclient.data.datasource.UsersDataSource;
+import com.githubclient.data.datasource.UsersDataSourceFactory;
 import com.githubclient.model.User;
 import com.githubclient.network.GithubApi;
 import com.githubclient.network.response.UserApiResponse;
@@ -12,6 +20,7 @@ import javax.inject.Singleton;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -21,10 +30,15 @@ import io.reactivex.schedulers.Schedulers;
 public class UserRepository {
 
     @Inject
-    UserDao userDao;
-
-    @Inject
     GithubApi githubApi;
+
+    private CompositeDisposable compositeDisposable;
+
+    private UsersDataSourceFactory usersDataSourceFactory;
+
+    private static final int pageSize = 20;
+
+    private String searchQuery;
 
     @Inject
     public UserRepository() {
@@ -32,33 +46,37 @@ public class UserRepository {
 
     private User selectedUser;
 
-    private int pagesAmount;
+    private LiveData<PagedList<User>> init() {
+        compositeDisposable = new CompositeDisposable();
+        usersDataSourceFactory = new UsersDataSourceFactory(compositeDisposable, githubApi, searchQuery);
+        PagedList.Config config = new PagedList.Config.Builder()
+                .setPageSize(pageSize)
+                //  .setInitialLoadSizeHint(pageSize * 2)
+                .setEnablePlaceholders(false)
+                .build();
 
-    public Single<List<User>> getUsers(String critetia, int page){
-        userDao.getAllUsers();
-        return githubApi.getUsers(critetia, page)
-                .subscribeOn(Schedulers.io())
-                .doOnEvent((userApiResponse, throwable) -> {if (throwable != null) return;
-                            pagesAmount = userApiResponse.getTotalCount() / 100 + (userApiResponse.getTotalCount() % 100 == 0 ? 0 : 1);
-                        }
-                )
-                .map(UserApiResponse::getUsers)
-                .doOnEvent((users, throwable) -> {
-                    if (throwable != null) return;
-                    userDao.insertUsers(users);
-                })
-        ;
+        return new LivePagedListBuilder<>(usersDataSourceFactory, config).build();
     }
 
-    public void setSelectedUser(User user){
+
+    public LiveData<PagedList<User>> startSearch(String query) {
+        this.searchQuery = query;
+        return init();
+    }
+
+    public LiveData<NetworkState> getNetworkState() {
+        return Transformations.switchMap(usersDataSourceFactory.getUsersDataSourceLiveData(), UsersDataSource::getNetworkState);
+    }
+
+    public void dispose() {
+        compositeDisposable.dispose();
+    }
+
+    public void setSelectedUser(User user) {
         this.selectedUser = user;
     }
 
     public User getSelectedUser() {
         return selectedUser;
-    }
-
-    public int getPagesAmount() {
-        return pagesAmount;
     }
 }
