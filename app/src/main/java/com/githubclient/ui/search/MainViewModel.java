@@ -18,7 +18,7 @@ import javax.inject.Inject;
  */
 public class MainViewModel extends ViewModel {
 
-    LiveData<PagedList<User>> userList;
+    private LiveData<PagedList<User>> userList;
 
     @Inject
     UserRepository userRepository;
@@ -50,4 +50,7 @@ public class MainViewModel extends ViewModel {
         userRepository.setSelectedUser(user);
     }
 
+    public LiveData<PagedList<User>> getUserList() {
+        return userList;
+    }
 }

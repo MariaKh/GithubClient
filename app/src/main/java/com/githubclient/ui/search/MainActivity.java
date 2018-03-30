@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements UserAdapter.UserA
     }
 
     private void observeUsers(){
-        viewModel.userList.observe(this, users -> {
+        viewModel.getUserList().observe(this, users -> {
             adapter.submitList(users);
             progressBar.setVisibility(View.GONE);
         });
