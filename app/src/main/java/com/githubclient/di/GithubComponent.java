@@ -1,7 +1,7 @@
 package com.githubclient.di;
 
 import com.githubclient.Application;
-import com.githubclient.ImageBindingAdapter;
+import com.githubclient.binding.ImageBindingAdapter;
 import com.githubclient.ui.details.DetailsActivity;
 import com.githubclient.ui.details.DetailsViewModel;
 import com.githubclient.ui.search.MainActivity;

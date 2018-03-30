@@ -19,7 +19,7 @@ public class UsersDataSourceFactory extends DataSource.Factory<Long, User> {
 
     private CompositeDisposable compositeDisposable;
 
-    private MutableLiveData<UsersDataSource> usersDataSourceLiveData = new MutableLiveData<>();
+    private final MutableLiveData<UsersDataSource> usersDataSourceLiveData = new MutableLiveData<>();
 
     GithubApi api;
 

@@ -10,9 +10,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -25,18 +23,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Singleton
 @Module
 public class NetworkModule {
-
-//    @Provides
-//    @Singleton
-//    public Interceptor provideAuthInterceptor() {
-//        return (chain) -> {
-//            Request original = chain.request();
-//            Request.Builder builder = original.newBuilder();
-//            Request request = builder.method(original.method(), original.body())
-//                    .build();
-//            return chain.proceed(request);
-//        };
-//    }
 
     @Provides
     @Singleton
@@ -71,8 +57,7 @@ public class NetworkModule {
         return retrofit.create(GithubApi.class);
     }
 
-    public static final Gson gson = new GsonBuilder()
-           // .setLenient()
+    private final Gson gson = new GsonBuilder()
             .create();
 
     @Provides

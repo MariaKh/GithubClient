@@ -1,6 +1,5 @@
 package com.githubclient.repository;
 
-import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.paging.LivePagedListBuilder;
@@ -11,17 +10,11 @@ import com.githubclient.data.datasource.UsersDataSource;
 import com.githubclient.data.datasource.UsersDataSourceFactory;
 import com.githubclient.model.User;
 import com.githubclient.network.GithubApi;
-import com.githubclient.network.response.UserApiResponse;
-
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by 1 on 3/27/2018.
@@ -40,6 +33,11 @@ public class UserRepository {
 
     private String searchQuery;
 
+    private final PagedList.Config config = new PagedList.Config.Builder()
+            .setPageSize(pageSize)
+            .setEnablePlaceholders(false)
+            .build();
+
     @Inject
     public UserRepository() {
     }
@@ -49,15 +47,8 @@ public class UserRepository {
     private LiveData<PagedList<User>> init() {
         compositeDisposable = new CompositeDisposable();
         usersDataSourceFactory = new UsersDataSourceFactory(compositeDisposable, githubApi, searchQuery);
-        PagedList.Config config = new PagedList.Config.Builder()
-                .setPageSize(pageSize)
-                //  .setInitialLoadSizeHint(pageSize * 2)
-                .setEnablePlaceholders(false)
-                .build();
-
         return new LivePagedListBuilder<>(usersDataSourceFactory, config).build();
     }
-
 
     public LiveData<PagedList<User>> startSearch(String query) {
         this.searchQuery = query;

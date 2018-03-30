@@ -1,11 +1,10 @@
-package com.githubclient;
+package com.githubclient.binding;
 
 import android.databinding.BindingAdapter;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import javax.inject.Inject;
 
 /**
  * Created by 1 on 3/27/2018.

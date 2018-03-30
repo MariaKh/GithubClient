@@ -34,7 +34,7 @@ public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoViewHolder
         holder.bind(repositories.get(position));
     }
 
-    public class RepoViewHolder extends RecyclerView.ViewHolder {
+    protected class RepoViewHolder extends RecyclerView.ViewHolder {
 
         private final RepoItemLayoutBinding binding;
 
@@ -43,7 +43,7 @@ public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoViewHolder
             this.binding = binding;
         }
 
-        public void bind(Repo repository) {
+        private void bind(Repo repository) {
             binding.setRepo(repository);
             binding.executePendingBindings();
         }

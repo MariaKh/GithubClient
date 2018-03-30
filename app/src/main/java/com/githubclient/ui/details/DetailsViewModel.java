@@ -33,12 +33,12 @@ public class DetailsViewModel extends ViewModel {
     private final MutableLiveData<List<Repo>> repos = new MutableLiveData<>();
 
 
-    public DetailsViewModel(){
+    public DetailsViewModel() {
         Application.getAppComponent().inject(this);
     }
 
 
-    public LiveData<List<Repo>> getRepos(){
+    public LiveData<List<Repo>> getRepos() {
         loadRepos(userRepository.getSelectedUser().getLogin());
         return repos;
     }
@@ -49,11 +49,11 @@ public class DetailsViewModel extends ViewModel {
         super.onCleared();
     }
 
-    private void loadRepos(String login){
+    private void loadRepos(String login) {
         disposables.add(repoRepository.getRepositories(login)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(repos::setValue
-                        ,error->{
+                        , error -> {
 
                         })
         );

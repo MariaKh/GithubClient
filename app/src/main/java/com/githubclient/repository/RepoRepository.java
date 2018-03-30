@@ -1,15 +1,12 @@
 package com.githubclient.repository;
 
 import com.githubclient.model.Repo;
-import com.githubclient.model.User;
 import com.githubclient.network.GithubApi;
-import com.githubclient.network.response.UserApiResponse;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 

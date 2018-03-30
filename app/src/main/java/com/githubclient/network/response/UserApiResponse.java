@@ -1,7 +1,6 @@
 package com.githubclient.network.response;
 
 import com.githubclient.model.User;
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;

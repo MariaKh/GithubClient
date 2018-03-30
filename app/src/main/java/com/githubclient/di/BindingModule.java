@@ -1,6 +1,6 @@
 package com.githubclient.di;
 
-import com.githubclient.ImageBindingAdapter;
+import com.githubclient.binding.ImageBindingAdapter;
 import com.squareup.picasso.Picasso;
 
 import dagger.Module;

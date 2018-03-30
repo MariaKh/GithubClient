@@ -1,15 +1,11 @@
 package com.githubclient.network;
 
 import com.githubclient.model.Repo;
-import com.githubclient.model.User;
-import com.githubclient.network.response.RepoApiResponse;
 import com.githubclient.network.response.UserApiResponse;
 
 import java.util.List;
 
-import io.reactivex.Flowable;
 import io.reactivex.Single;
-import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -20,8 +16,6 @@ import retrofit2.http.Query;
 
 public interface GithubApi {
 
-//    @GET("/users")
-//    Single<List<User>> getUsers(@Query("since") long userId, @Query("per_page") int perPage);
     @GET("search/users")
     Single<UserApiResponse> getUsers(@Query("q") String criteria, @Query("per_page") int perPage);
 

@@ -10,11 +10,7 @@ import com.githubclient.network.GithubApi;
 
 import javax.inject.Inject;
 
-import io.reactivex.Completable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Action;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by 1 on 3/29/2018.
@@ -26,7 +22,7 @@ public class UsersDataSource extends ItemKeyedDataSource<Long, User> {
 
     private CompositeDisposable compositeDisposable;
 
-    private MutableLiveData<NetworkState> networkState = new MutableLiveData<>();
+    private final MutableLiveData<NetworkState> networkState = new MutableLiveData<>();
 
     private String searchQuery;
 
@@ -60,9 +56,9 @@ public class UsersDataSource extends ItemKeyedDataSource<Long, User> {
                     networkState.postValue(NetworkState.LOADED);
                     callback.onResult(users.getUsers());
                 },
-                throwable -> {
-                    networkState.postValue(NetworkState.error(throwable.getMessage()));
-                }));
+                throwable ->
+                    networkState.postValue(NetworkState.error(throwable.getMessage()))
+                ));
     }
 
     @Override
